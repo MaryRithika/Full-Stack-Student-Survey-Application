@@ -1,0 +1,141 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <h1 class="div2 text-center">Survey</h1>
+        <br>
+        <form #f="ngForm" style="background-color: #006633; color: #FFCC33;" class="container p-5 border" id="surveyForm"
+          name="surveyForm" autocomplete="on" (ngSubmit) = "onSubmit()">
+
+          <div class="form-group">
+            <label for="firstName">First Name<small style="display:inline; color:red;">*</small></label>
+            <input type="text" name="firstName" class="form-control" id="firstName" placeholder="Enter firstName" [(ngModel)] = survey.firstName  #firstNameInput="ngModel" (blur)="displayErrorMessage(firstNameInput)" required
+              autofocus>
+              <div *ngIf="firstNameInput.invalid && (firstNameInput.dirty || firstNameInput.touched)" class="text-danger">
+                First name is required.
+              </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name<small style="display:inline; color:red;">*</small></label>
+            <input type="text" name="lastName" class="form-control" id="lastName" placeholder="Enter lastName" [(ngModel)] = survey.lastName #lastName="ngModel" (blur)="displayErrorMessage(lastName)" required>
+            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
+              Last name is required.
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="email">Email address<small style="display:inline; color:red;">*</small></label>
+            <input type="text" class="form-control" id="email" name="email" [(ngModel)] = survey.email placeholder="Enter email" required #email="ngModel" (blur)="displayErrorMessage(email)">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+              Email is required.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone<small style="display:inline; color:red;">*</small></label>
+            <input type="tel" class="form-control" id="phone" name="telephoneNumber" placeholder="(###) ###-####" [(ngModel)] = survey.telephoneNumber required #phoneNumber="ngModel" (blur)="displayErrorMessage(phoneNumber)">
+            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="text-danger">
+              Phone Number is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="streetAddress">Street Address<small style="display:inline; color:red;">*</small></label>
+            <input type="text" class="form-control" id="streetAddress" name="streetAddress" [(ngModel)] = survey.streetAddress placeholder="Enter your street address" required #streetAddress="ngModel" (blur)="displayErrorMessage(streetAddress)">
+            <div *ngIf="streetAddress.invalid && (streetAddress.dirty || streetAddress.touched)" class="text-danger">
+            Street Address is required.
+            </div>
+          </div>
+
+            
+            <div class="form-row">
+              <div class="col-6">
+                <label for="city">City<small style="display:inline; color:red;">*</small></label>
+              </div>
+              <div class="col">
+                <label for="state">State<small style="display:inline; color:red;">*</small></label>
+              </div>
+              <div class="col">
+                <label for="zip">Zip<small style="display:inline; color:red;">*</small></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-row">
+                <div class="col-6">
+                  <input type="text" class="form-control" id="city" name="city" [(ngModel)] = survey.city required #city="ngModel" (blur)="displayErrorMessage(city)">
+                  <div *ngIf="city.invalid && (city.dirty || city.touched)" class="text-danger">
+                  City is required.
+                  </div>
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" id="state" name="state" [(ngModel)] = survey.state required #state="ngModel" (blur)="displayErrorMessage(state)">
+                  <div *ngIf="state.invalid && (state.dirty || state.touched)" class="text-danger">
+                  State is required.
+                  </div>
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" id="zip" name="zip" placeholder="Enter Zip" [(ngModel)] = survey.zip required #zip="ngModel" (blur)="displayErrorMessage(zip)">
+                  <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
+                  Zip is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="date">Date of Survey<small style="display:inline; color:red;">*</small></label>
+              <input type="date" class="form-control" id="date" name="dateOfSurvey" placeholder="Choose date" [(ngModel)] = survey.dateOfSurvey required #dateOfSurvey="ngModel" (blur)="displayErrorMessage(dateOfSurvey)">
+              <div *ngIf="displayDOS(dateOfSurvey) && dateOfSurvey.touched" class="text-danger">
+                Date of Survey is required.
+                </div>
+              
+            
+            </div>
+  
+            <div class="form-group">
+              What do you like most about the campus?
+              <div class="form-check" *ngFor="let option of likedMost">
+                <input type="checkbox" class="form-check-input" name="likedMost" [(ngModel)]=option.checked > {{ option.label }}
+              </div>
+            </div>
+  
+            <div class="form-group">
+              What interests you in the university?
+              <div class="form-check" *ngFor="let option of interested">
+                <input type="radio" class="form-check-input" name="radioValues" [(ngModel)]=survey.interestedMost [value]=option> {{ option }}
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label for="likelihood">How likely are you going to suggest the university</label>
+
+              <select name="likelihood" [(ngModel)]="survey.likelihood">
+                <option *ngFor="let option of likelihoodValues">{{ option }}</option>
+              </select>
+             
+            </div>
+            
+  
+            <div class="form-group">
+              <label for="comment">Comments:</label>
+              <textarea class="form-control" rows="5" id="comment" name="comment" [(ngModel)]=survey.additionalComments></textarea>
+            </div>
+  
+<div class="row">
+            <div class="col-6">
+              <button type="submit" class="btn btn-success btn-block" [disabled]="f.invalid && !checkRequired()">Submit</button>
+            </div>
+  
+            <div class="col-6">
+              <button type="reset" class="btn btn-danger btn-block" (click) = "onCancel()">Cancel</button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </div>
